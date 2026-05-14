@@ -6,6 +6,7 @@
   
   import Taskbar from './lib/components/Taskbar.svelte';
   import DesktopIcon from './lib/components/DesktopIcon.svelte';
+  import DesktopFolder from './lib/components/DesktopFolder.svelte';
   import Window from './lib/components/Window.svelte';
   import Startup from './lib/components/Startup.svelte';
   
