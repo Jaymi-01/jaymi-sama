@@ -27,7 +27,13 @@
   function openWindow(id: string) {
     const win = windows.find(w => w.id === id);
     if (win) {
-      if (!win.isOpen) win.isOpen = true;
+      if (!win.isOpen) {
+        win.isOpen = true;
+        // Auto-maximize on mobile
+        if (window.innerWidth < 768) {
+          win.isMaximized = true;
+        }
+      }
       if (win.isMinimized) win.isMinimized = false;
       focusWindow(id);
     }
@@ -151,7 +157,7 @@
     </div>
   
     <!-- Desktop Icons -->
-    <div class="absolute top-8 left-8 flex flex-col gap-4">
+    <div class="absolute top-8 left-4 right-4 md:left-8 md:right-auto grid grid-cols-3 md:flex md:flex-col gap-2 md:gap-4">
       {#each windows as win}
         <DesktopIcon title={win.title} icon={win.icon} onClick={() => openWindow(win.id)} />
       {/each}
