@@ -1,5 +1,6 @@
 <script lang="ts">
   import { X, Minus, Square, CornersOut } from 'phosphor-svelte';
+  import { gsap } from 'gsap';
 
   interface Props {
     title: string;
@@ -20,9 +21,59 @@
     onClose, onMinimize, onMaximize, onFocus, children 
   }: Props = $props();
 
+  let windowRef = $state<HTMLElement>();
   let isDragging = $state(false);
   let x = $state(100 + Math.random() * 50);
   let y = $state(100 + Math.random() * 50);
+
+  // Animation states
+  $effect(() => {
+    if (isOpen && windowRef) {
+      // Opening animation
+      gsap.fromTo(windowRef, 
+        { scale: 0.9, opacity: 0, filter: 'blur(10px)' },
+        { scale: 1, opacity: 1, filter: 'blur(0px)', duration: 0.4, ease: 'power4.out' }
+      );
+    }
+  });
+
+  $effect(() => {
+    if (windowRef) {
+      if (isMaximized) {
+        gsap.to(windowRef, {
+          duration: 0.5,
+          ease: 'expo.out',
+          overwrite: 'auto'
+        });
+      } else {
+        gsap.to(windowRef, {
+          duration: 0.5,
+          ease: 'expo.out',
+          overwrite: 'auto'
+        });
+      }
+    }
+  });
+
+  $effect(() => {
+    if (windowRef) {
+      if (isMinimized) {
+        gsap.to(windowRef, {
+          scale: 0.8,
+          opacity: 0.5,
+          duration: 0.3,
+          ease: 'power2.inOut'
+        });
+      } else {
+        gsap.to(windowRef, {
+          scale: 1,
+          opacity: 1,
+          duration: 0.3,
+          ease: 'power2.inOut'
+        });
+      }
+    }
+  });
 
   function draggable(node: HTMLElement) {
     function handleStart(clientX: number, clientY: number) {
@@ -92,8 +143,8 @@
 
 {#if isOpen}
   <div
+    bind:this={windowRef}
     class="fixed bg-night-black border border-white/20 shadow-2xl overflow-hidden flex flex-col
-    {!isDragging ? 'transition-all duration-300' : ''}
     {isMinimized ? 'w-80 h-10 !min-w-0 !min-h-0 opacity-90 shadow-lg' : 
      isMaximized ? 'inset-0 !w-full !h-[calc(100vh-3.5rem)] !top-0 !left-0 !z-[9000]' : 
      'min-w-[300px] min-h-[200px] w-[90vw] md:w-[700px] h-[60vh] md:h-[500px] max-h-[80vh]'}"
