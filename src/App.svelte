@@ -121,9 +121,37 @@
     }
   });
 
-  const handleBootComplete = async () => {
+  function playStartupSound(audioCtx: AudioContext) {
+    function playNote(freq: number, startTime: number, duration: number, volume: number) {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, startTime);
+      
+      gain.gain.setValueAtTime(0, startTime);
+      gain.gain.linearRampToValueAtTime(volume, startTime + 0.05);
+      gain.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
+      
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      
+      osc.start(startTime);
+      osc.stop(startTime + duration);
+    }
+
+    const now = audioCtx.currentTime;
+    // Cyber chime: C4 -> G4 -> C5 -> E5
+    playNote(261.63, now, 1.5, 0.2);       // C4
+    playNote(392.00, now + 0.1, 1.5, 0.15); // G4
+    playNote(523.25, now + 0.2, 2.0, 0.1);  // C5
+    playNote(659.25, now + 0.3, 2.5, 0.05); // E5
+  }
+
+  const handleBootComplete = async (audioCtx: AudioContext) => {
     isBooted = true;
     await tick(); // Wait for DOM update
+    playStartupSound(audioCtx);
   };
 
   const openWindows = $derived(windows.filter(w => w.isOpen));
