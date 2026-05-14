@@ -2,7 +2,7 @@
 
 A futuristic, OS-style developer portfolio built with Svelte 5, GSAP, and Tailwind CSS.
 
-## 🚀 Experience the "Cyber Ink" Interface
+## 🚀 Experience the "Jaymi OS" Interface
 
 This portfolio is designed as a high-tech operating system interface, providing a tactile and immersive way to explore my work, skills, and background.
 
@@ -27,68 +27,61 @@ This portfolio is designed as a high-tech operating system interface, providing 
    ```bash
    pnpm install
    ```
-4. Start the development server:
+4. Configure environment variables:
+   - Copy `.env.example` to `.env`.
+   - Fill in your email credentials (`EMAIL_USER`, `EMAIL_PASS`).
+5. Start the full system (Frontend + Backend):
    ```bash
    pnpm dev
    ```
-5. Build for production:
-   ```bash
-   pnpm build
-   ```
 
 ---
 
-## 📐 Architecture Explanation
+## 🎨 Dynamic Theming System
 
-The project follows a **Component-Driven OS Metaphor** architecture, leveraging the latest features of **Svelte 5**.
+Jaymi OS features a robust, persistent theming engine managed via a dedicated `Settings.sys` window.
 
-### State Management (Runes)
-- **$state:** Used to manage window positions (`x`, `y`), z-indices, and visibility states.
-- **$derived:** Dynamically calculates the `activeWindowId` based on the highest `zIndex` among open windows.
-- **$effect:** Handles global event listeners for the custom cursor and window dragging logic.
-
-### Window System
-- Each window is an instance of the `Window.svelte` component, which accepts a Svelte snippet (`children`) for its content.
-- Windows are managed as an array of objects in `App.svelte`, allowing for centralized control over the desktop environment.
+- **Profiles:** Choose between **Cyber Ink** (Neon Cyan), **Classic Terminal** (Matrix Green), or **Mocha Mousse** (Cream & Terracotta).
+- **Smooth Transitions:** All UI elements, including background glows and the custom cursor, transition smoothly between themes using CSS variables.
+- **Persistence:** User selections are saved to `localStorage` and automatically restored on future sessions.
 
 ---
 
-## 🎬 Animation Decisions
+## 📧 Advanced Communication (`Secure_Link.exe`)
 
-Animations are central to the "high-tech" feel and were chosen to balance aesthetics with responsiveness.
+The contact system is built for reliability and high-tech feedback.
 
-- **GSAP for Precision:** Used for the boot sequence and custom cursor movement where sub-pixel precision and complex easing are required.
-- **CSS Transitions for UI:** Standard UI states (maximizing, minimizing) use CSS transitions for hardware-accelerated performance.
-- **Grid Sparks:** Pure CSS animations were chosen for the background grid to minimize main-thread work, ensuring that background decorative elements don't interfere with foreground interactivity.
-
----
-
-## ⚡ Performance Optimization Techniques
-
-Maintaining a high frame rate while dragging windows on a complex grid was a priority.
-
-- **Dynamic Transition Toggling:** CSS transitions are disabled on the window container during dragging (`isDragging` state). This prevents the window from "lagging" behind the cursor as the browser tries to animate the position changes.
-- **Will-Change Property:** Used on moveable windows to hint to the browser's rendering engine about upcoming position changes, optimizing layer composition.
-- **Event Listener Cleanup:** All window and global event listeners are meticulously cleaned up in the `onDestroy` or `return` block of `$effect` to prevent memory leaks.
-- **Centering Logic Optimization:** Maximized window centering is handled via Flexbox rather than calculating offsets, reducing layout thrashing.
+- **Nodemailer Backend:** Powered by a custom Express server for direct email transmission.
+- **Animated Validation:** Inputs use GSAP-powered "shaking" effects and pulsing warnings to guide users through required fields.
+- **Autofill Optimized:** Custom CSS ensures the sleek dark theme is maintained even when using browser autofill.
+- **Success States:** Real-time feedback with an immersive "Packet Transmitted" success animation.
 
 ---
 
-## ♿ Accessibility Considerations
+## 🎹 Immersive Audio
 
-While the portfolio prioritizes a visual OS metaphor, accessibility was integrated into the core components:
-
-- **Keyboard Navigation:** All desktop icons and taskbar buttons are focusable and triggerable via the `Enter` key.
-- **ARIA Roles:** Used `role="presentation"` and appropriate `aria-label` attributes on buttons to ensure screen readers can describe the window controls (minimize, maximize, close).
-- **Semantic HTML:** Despite the complex layout, the structure uses semantic elements where possible to maintain document hierarchy.
-- **Color Contrast:** The "Cyber Ink" theme was designed with high-contrast Neon Cyan and Soft Lavender against Deep Charcoal to ensure readability.
+Experience a cinematic "Wing-a-ding" startup sequence:
+- **User-Initiated Boot:** Audio unlocks via a "Power" button to comply with browser policies.
+- **Synth Chime:** A multi-layered, low-pitch drone and shimmering finish generated via the Web Audio API.
+- **Timed Reveal:** The sound is perfectly synchronized to the moment the desktop interface appears.
 
 ---
 
-## ⚖️ Trade-offs Made
+## 📱 Multi-Device Optimization
 
-- **Custom Cursor vs. Native Latency:** A custom GSAP cursor was chosen for the "premium" feel, knowing it introduces a minor layer of complexity compared to the native OS cursor.
-- **Visual Grid vs. Rendering Load:** The background grid increases the DOM element count, but this was offset by using CSS animations instead of JavaScript-driven ones.
-- **Svelte 5 Early Adoption:** Choosing Svelte 5 (v5.55+) allowed for cleaner state management with Runes but required working with newer, rapidly evolving APIs.
-- **Window Clipping:** To achieve the "moveable minimized" effect, minimized windows are styled as collapsed title bars rather than being completely removed from the DOM. This keeps the state alive but requires careful management of `overflow` and `height`.
+The interface adapts its behavior and layout based on the device category:
+
+- **Mobile:** Windows automatically maximize for readability; icons switch to a dense grid; taskbar streamlines system info.
+- **Tablet:** Windows open in a generous "floating" state to leverage the desktop metaphor; icons use a 4-column layout.
+- **Desktop:** Full window management system with drag-and-drop, minimizing to title bars, and z-index focusing.
+- **Touch Support:** Native touch event handling added to the window dragging logic for seamless tablet usage.
+
+---
+
+## 📐 Architecture & Tech Stack
+
+- **Framework:** [Svelte 5](https://svelte.dev/) (Runes: `$state`, `$derived`, `$effect`).
+- **Backend:** [Express](https://expressjs.com/) & [Nodemailer](https://nodemailer.com/).
+- **Animation:** [GSAP](https://greensock.com/gsap/) for precise cursor and interaction logic.
+- **Styling:** [Tailwind CSS v4](https://tailwindcss.com/) with hardware-accelerated transitions.
 
