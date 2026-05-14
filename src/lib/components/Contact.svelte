@@ -1,6 +1,7 @@
 <script lang="ts">
   import { PaperPlaneTilt, GithubLogo, LinkedinLogo, TwitterLogo, CalendarBlank, WarningCircle } from 'phosphor-svelte';
   import { gsap } from 'gsap';
+  import { fly } from 'svelte/transition';
 
   let name = $state('');
   let email = $state('');
@@ -20,7 +21,7 @@
     );
   }
 
-  function handleSubmit(e: SubmitEvent) {
+  async function handleSubmit(e: SubmitEvent) {
     e.preventDefault();
     
     // Validation
@@ -40,49 +41,38 @@
 
     isSubmitting = true;
     
-    // Simulate real integration (e.g. EmailJS/Formspree)
-    setTimeout(() => {
-      isSubmitting = false;
-      submitted = true;
-      name = ''; email = ''; message = '';
-    }, 1500);
-  }
+    try {
+      const response = await fetch('http://localhost:3001/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, message })
+      });
 
-  function openScheduler() {
-    // Placeholder for Calendly or other scheduling tool
-    window.open('https://calendly.com/your-handle', '_blank');
+      if (response.ok) {
+        submitted = true;
+        name = ''; email = ''; message = '';
+      } else {
+        alert('Transmission failure. Check backend configuration or use social links.');
+      }
+    } catch (err) {
+      alert('Network error. Is the backend server running? Check your connection and retry.');
+    } finally {
+      isSubmitting = false;
+    }
   }
 </script>
 
 <div class="max-w-xl w-full">
-  <div class="mb-8 p-4 bg-night-pink/5 border border-night-pink/20 flex items-center justify-between gap-4 group hover:border-night-pink transition-all">
-    <div class="flex items-center gap-4">
-      <div class="p-2 bg-night-pink text-white">
-        <CalendarBlank size={24} weight="bold" />
-      </div>
-      <div>
-        <h4 class="text-xs font-bold uppercase tracking-widest text-white">Schedule a Briefing</h4>
-        <p class="text-[10px] text-white/50">Book a direct time slot for collaboration.</p>
-      </div>
-    </div>
-    <button 
-      onclick={openScheduler}
-      class="px-4 py-2 border border-night-pink text-night-pink text-[10px] font-bold uppercase tracking-widest hover:bg-night-pink hover:text-white transition-all"
-    >
-      Initialize
-    </button>
-  </div>
-
   <div class="relative">
     <div class="absolute -left-4 top-0 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-white/10 to-transparent"></div>
     
     {#if submitted}
-      <div class="text-center py-12 space-y-6" in:gsap={{opacity: 0, y: 20}}>
+      <div class="text-center py-12 space-y-6" in:fly={{opacity: 0, y: 20}}>
         <div class="p-6 bg-night-lime text-black inline-block shadow-[0_0_20px_rgba(154,221,0,0.4)]">
           <PaperPlaneTilt size={48} weight="fill" />
         </div>
         <h3 class="text-2xl font-bold uppercase text-night-lime tracking-tighter">Packet Transmitted</h3>
-        <p class="text-xs text-white/50 max-w-[280px] mx-auto uppercase tracking-widest leading-loose">Communication successfully established. Awaiting response from JAYMI_OS.</p>
+        <p class="text-xs text-white/50 max-w-[280px] mx-auto uppercase tracking-widest leading-loose">Communication successfully established. Awaiting response from JAYMI_SAMA.</p>
         <button onclick={() => (submitted = false)} class="text-night-pink font-bold uppercase tracking-[0.3em] text-[10px] hover:underline pt-4">Send New Packet</button>
       </div>
     {:else}
