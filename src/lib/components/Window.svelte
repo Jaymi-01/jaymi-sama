@@ -160,11 +160,11 @@
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #00E8FF;
+    background: var(--color-night-pink);
     border-radius: 10px;
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #E8D9FF;
+    background: var(--color-night-lime);
   }
 </style>
