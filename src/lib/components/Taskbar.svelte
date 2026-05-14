@@ -80,21 +80,21 @@
       <Cpu size={24} weight="bold" />
     </button>
     
-    <div class="flex gap-1 h-full py-1.5">
+    <div class="flex gap-1 h-full py-1.5 overflow-x-auto no-scrollbar max-w-[40vw] sm:max-w-none">
       {#each openWindows as window}
         <button
           onclick={() => onWindowClick(window.id)}
-          class="px-4 h-full flex items-center gap-2 border-b-2 transition-all {activeWindowId === window.id ? 'border-night-pink bg-white/10' : 'border-transparent bg-white/5 hover:bg-white/10'}"
+          class="px-2 md:px-4 h-full flex items-center gap-2 border-b-2 transition-all flex-shrink-0 {activeWindowId === window.id ? 'border-night-pink bg-white/10' : 'border-transparent bg-white/5 hover:bg-white/10'}"
         >
-          <span class="text-xs font-bold uppercase tracking-widest text-white/80 font-jetbrains">{window.title}</span>
+          <span class="text-[9px] md:text-xs font-bold uppercase tracking-widest text-white/80 font-jetbrains whitespace-nowrap">{window.title}</span>
         </button>
       {/each}
     </div>
   </div>
 
-  <div class="flex items-center gap-6 text-white/60 font-jetbrains text-[10px] font-bold tracking-widest h-full">
+  <div class="flex items-center gap-2 md:gap-6 text-white/60 font-jetbrains text-[10px] font-bold tracking-widest h-full">
     <!-- Wifi Icon -->
-    <div class="group relative flex items-center">
+    <div class="group relative hidden sm:flex items-center">
       {#if isOnline}
         <WifiHigh size={18} weight="bold" class="text-night-lime" />
         <div class="absolute bottom-12 right-0 bg-night-black border border-white/10 px-3 py-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none text-xs">
@@ -110,7 +110,7 @@
 
     <!-- Sound Icon -->
     <button 
-      class="flex items-center transition-colors {isMuted ? 'text-night-pink' : 'text-white/60 hover:text-night-lime'}" 
+      class="hidden sm:flex items-center transition-colors {isMuted ? 'text-night-pink' : 'text-white/60 hover:text-night-lime'}" 
       onclick={() => (isMuted = !isMuted)}
       aria-label={isMuted ? "Unmute" : "Mute"}
     >
@@ -124,15 +124,15 @@
     <!-- Battery -->
     {#if batteryLevel !== null}
       {@const Icon = BatteryIcon()}
-      <div class="flex items-center gap-1.5 {batteryLevel < 20 && !isCharging ? 'text-night-pink animate-pulse' : 'text-night-lime'}">
+      <div class="hidden sm:flex items-center gap-1.5 {batteryLevel < 20 && !isCharging ? 'text-night-pink animate-pulse' : 'text-night-lime'}">
         <Icon size={16} weight="bold" />
         <span>{batteryLevel}%</span>
       </div>
     {/if}
     
-    <div class="px-3 flex flex-col items-center justify-center min-w-[100px] h-10 hover:bg-white/5 transition-colors cursor-default">
-      <span class="text-white leading-tight">{time}</span>
-      <span class="opacity-40 text-[9px] leading-tight mt-0.5">{dateString}</span>
+    <div class="px-2 md:px-3 flex flex-col items-center justify-center min-w-[80px] md:min-w-[100px] h-10 hover:bg-white/5 transition-colors cursor-default">
+      <span class="text-white leading-tight text-[10px] md:text-xs">{time}</span>
+      <span class="opacity-40 text-[8px] md:text-[9px] leading-tight mt-0.5">{dateString}</span>
     </div>
   </div>
 </div>
