@@ -33,16 +33,16 @@
   });
 </script>
 
-<div class="fixed inset-0 bg-night-black z-[100000] flex flex-col items-center justify-center p-8 font-jetbrains overflow-hidden">
+<div class="fixed inset-0 bg-night-black z-[100000] flex flex-col items-center justify-center p-6 md:p-8 font-jetbrains overflow-hidden">
   <!-- Logo -->
-  <div bind:this={logoRef} class="mb-12 relative">
+  <div bind:this={logoRef} class="mb-8 md:mb-12 relative">
     <div class="absolute inset-0 bg-night-pink blur-2xl opacity-20 animate-pulse"></div>
-    <img src="/JS-favicon.png" alt="OS Logo" class="w-32 h-32 relative z-10" />
+    <img src="/JS-favicon.png" alt="OS Logo" class="w-24 h-24 md:w-32 md:h-32 relative z-10" />
   </div>
 
   <!-- Progress Bar Container -->
-  <div class="w-full max-w-sm">
-    <div class="flex justify-between text-[10px] text-white/40 mb-2 uppercase tracking-widest">
+  <div class="w-full max-w-[280px] md:max-w-sm">
+    <div class="flex justify-between text-[8px] md:text-[10px] text-white/40 mb-2 uppercase tracking-widest">
       <span>Booting_Sequence</span>
       <span>{progress}%</span>
     </div>
