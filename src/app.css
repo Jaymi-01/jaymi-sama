@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+@import url('https://api.fontshare.com/v2/css?f[]=clash-display@700,600,500,400&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-night-black: #101014;
+  --color-night-pink: #00E8FF;
+  --color-night-lime: #E8D9FF;
+
+  --font-clash: "Clash Display", sans-serif;
+  --font-jetbrains: "JetBrains Mono", monospace;
+}
+
+:root {
+  background-color: var(--color-night-black);
+  color: #FFFFFF;
+  font-family: var(--font-jetbrains);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-clash);
+  color: var(--color-night-pink);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+::-webkit-scrollbar {
+  width: 2px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-night-black);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-night-pink);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-night-lime);
+}
