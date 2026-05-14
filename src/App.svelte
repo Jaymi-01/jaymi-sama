@@ -12,12 +12,16 @@
   import About from './lib/components/About.svelte';
   import Projects from './lib/components/Projects.svelte';
   import Contact from './lib/components/Contact.svelte';
+  import Settings from './lib/components/Settings.svelte';
+  import { themeManager } from './lib/theme.svelte';
+  import { Gear } from 'phosphor-svelte';
 
   let isBooted = $state(false);
   let windows = $state([
     { id: 'about', title: 'System_Info.sh', component: About, isOpen: false, isMinimized: false, isMaximized: false, zIndex: 10, icon: User },
     { id: 'projects', title: 'Modules.bin', component: Projects, isOpen: false, isMinimized: false, isMaximized: false, zIndex: 10, icon: Code },
-    { id: 'contact', title: 'Secure_Link.exe', component: Contact, isOpen: false, isMinimized: false, isMaximized: false, zIndex: 10, icon: Envelope }
+    { id: 'contact', title: 'Secure_Link.exe', component: Contact, isOpen: false, isMinimized: false, isMaximized: false, zIndex: 10, icon: Envelope },
+    { id: 'settings', title: 'Settings.sys', component: Settings, isOpen: false, isMinimized: false, isMaximized: false, zIndex: 10, icon: Gear }
   ]);
 
   let maxZIndex = $state(10);
@@ -29,9 +33,12 @@
     if (win) {
       if (!win.isOpen) {
         win.isOpen = true;
-        // Auto-maximize on mobile
+        // Responsive auto-sizing
         if (window.innerWidth < 768) {
           win.isMaximized = true;
+        } else if (window.innerWidth >= 768 && window.innerWidth < 1024) {
+          // Centered floating for tablets
+          win.isMaximized = false;
         }
       }
       if (win.isMinimized) win.isMinimized = false;
@@ -95,8 +102,8 @@
         const target = e.target as HTMLElement;
         if (target.closest('a, button, [role="button"], .project-card')) {
           gsap.to(cursorOuterRef, { scale: 1.4, rotation: 45, duration: 0.4, ease: 'back.out(2)' });
-          gsap.to(cursorRef, { backgroundColor: '#E8D9FF', scale: 1.5, shadow: '0 0 12px #E8D9FF', duration: 0.3 });
-          gsap.to('.cursor-bracket', { borderColor: '#E8D9FF', duration: 0.3 });
+          gsap.to(cursorRef, { backgroundColor: themeManager.currentTheme.accent2, scale: 1.5, shadow: `0 0 12px ${themeManager.currentTheme.accent2}`, duration: 0.3 });
+          gsap.to('.cursor-bracket', { borderColor: themeManager.currentTheme.accent2, duration: 0.3 });
         }
       };
 
@@ -104,8 +111,8 @@
         const target = e.target as HTMLElement;
         if (target.closest('a, button, [role="button"], .project-card')) {
           gsap.to(cursorOuterRef, { scale: 1, rotation: 0, duration: 0.4, ease: 'power2.out' });
-          gsap.to(cursorRef, { backgroundColor: '#00E8FF', scale: 1, shadow: '0 0 8px #00E8FF', duration: 0.3 });
-          gsap.to('.cursor-bracket', { borderColor: '#00E8FF', duration: 0.3 });
+          gsap.to(cursorRef, { backgroundColor: themeManager.currentTheme.accent1, scale: 1, shadow: `0 0 8px ${themeManager.currentTheme.accent1}`, duration: 0.3 });
+          gsap.to('.cursor-bracket', { borderColor: themeManager.currentTheme.accent1, duration: 0.3 });
         }
       };
 
@@ -194,7 +201,7 @@
     </div>
   
     <!-- Desktop Icons -->
-    <div class="absolute top-8 left-4 right-4 md:left-8 md:right-auto grid grid-cols-3 md:flex md:flex-col gap-2 md:gap-4">
+    <div class="absolute top-8 left-4 right-4 md:left-8 md:right-auto grid grid-cols-3 sm:grid-cols-4 md:flex md:flex-col gap-2 md:gap-4">
       {#each windows as win}
         <DesktopIcon title={win.title} icon={win.icon} onClick={() => openWindow(win.id)} />
       {/each}
@@ -251,8 +258,8 @@
     position: absolute;
     width: 3px;
     height: 3px;
-    background: #00E8FF;
-    box-shadow: 0 0 10px #00E8FF, 0 0 20px #00E8FF;
+    background: var(--color-night-pink);
+    box-shadow: 0 0 10px var(--color-night-pink), 0 0 20px var(--color-night-pink);
     border-radius: 50%;
     opacity: 0;
     z-index: 1;
