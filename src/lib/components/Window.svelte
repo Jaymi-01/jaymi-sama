@@ -25,31 +25,66 @@
   let y = $state(100 + Math.random() * 50);
 
   function draggable(node: HTMLElement) {
-    function handleMousedown(e: MouseEvent) {
-      if (isMaximized && !isMinimized) return; // Disable dragging only when maximized and NOT minimized
+    function handleStart(clientX: number, clientY: number) {
+      if (isMaximized && !isMinimized) return;
       isDragging = true;
       onFocus();
     }
 
-    function handleMousemove(e: MouseEvent) {
+    function handleMove(movementX: number, movementY: number) {
       if (!isDragging) return;
-      x += e.movementX;
-      y += e.movementY;
+      x += movementX;
+      y += movementY;
     }
 
-    function handleMouseup() {
+    function handleEnd() {
       isDragging = false;
     }
 
-    node.addEventListener('mousedown', handleMousedown);
-    window.addEventListener('mousemove', handleMousemove);
-    window.addEventListener('mouseup', handleMouseup);
+    // Mouse Events
+    const onMousedown = (e: MouseEvent) => handleStart(e.clientX, e.clientY);
+    const onMousemove = (e: MouseEvent) => handleMove(e.movementX, e.movementY);
+    const onMouseup = () => handleEnd();
+
+    // Touch Events
+    let lastTouchX = 0;
+    let lastTouchY = 0;
+
+    const onTouchstart = (e: TouchEvent) => {
+      const touch = e.touches[0];
+      lastTouchX = touch.clientX;
+      lastTouchY = touch.clientY;
+      handleStart(touch.clientX, touch.clientY);
+    };
+
+    const onTouchmove = (e: TouchEvent) => {
+      if (!isDragging) return;
+      const touch = e.touches[0];
+      const movementX = touch.clientX - lastTouchX;
+      const movementY = touch.clientY - lastTouchY;
+      lastTouchX = touch.clientX;
+      lastTouchY = touch.clientY;
+      handleMove(movementX, movementY);
+    };
+
+    const onTouchend = () => handleEnd();
+
+    node.addEventListener('mousedown', onMousedown);
+    window.addEventListener('mousemove', onMousemove);
+    window.addEventListener('mouseup', onMouseup);
+
+    node.addEventListener('touchstart', onTouchstart, { passive: false });
+    window.addEventListener('touchmove', onTouchmove, { passive: false });
+    window.addEventListener('touchend', onTouchend);
 
     return {
       destroy() {
-        node.removeEventListener('mousedown', handleMousedown);
-        window.removeEventListener('mousemove', handleMousemove);
-        window.removeEventListener('mouseup', handleMouseup);
+        node.removeEventListener('mousedown', onMousedown);
+        window.removeEventListener('mousemove', onMousemove);
+        window.removeEventListener('mouseup', onMouseup);
+        node.removeEventListener('touchstart', onTouchstart);
+        window.removeEventListener('touchmove', onTouchmove);
+        window.removeEventListener('touchend', onTouchend);
       }
     };
   }
