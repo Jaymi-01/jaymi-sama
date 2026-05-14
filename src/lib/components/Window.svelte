@@ -28,9 +28,10 @@
 
   // Animation states
   $effect(() => {
-    if (isOpen && windowRef) {
+    const el = windowRef;
+    if (isOpen && el) {
       // Opening animation
-      gsap.fromTo(windowRef, 
+      gsap.fromTo(el, 
         { scale: 0.9, opacity: 0, filter: 'blur(10px)' },
         { scale: 1, opacity: 1, filter: 'blur(0px)', duration: 0.4, ease: 'power4.out' }
       );
@@ -38,15 +39,16 @@
   });
 
   $effect(() => {
-    if (windowRef) {
+    const el = windowRef;
+    if (el) {
       if (isMaximized) {
-        gsap.to(windowRef, {
+        gsap.to(el, {
           duration: 0.5,
           ease: 'expo.out',
           overwrite: 'auto'
         });
       } else {
-        gsap.to(windowRef, {
+        gsap.to(el, {
           duration: 0.5,
           ease: 'expo.out',
           overwrite: 'auto'
@@ -56,16 +58,17 @@
   });
 
   $effect(() => {
-    if (windowRef) {
+    const el = windowRef;
+    if (el) {
       if (isMinimized) {
-        gsap.to(windowRef, {
+        gsap.to(el, {
           scale: 0.8,
           opacity: 0.5,
           duration: 0.3,
           ease: 'power2.inOut'
         });
       } else {
-        gsap.to(windowRef, {
+        gsap.to(el, {
           scale: 1,
           opacity: 1,
           duration: 0.3,
