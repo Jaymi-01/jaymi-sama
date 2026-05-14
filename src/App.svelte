@@ -124,27 +124,20 @@
   function playStartupSound(audioCtx: AudioContext) {
     const now = audioCtx.currentTime;
 
-    function playPart(freq: number, startTime: number, duration: number, volume: number, isDing: boolean = false) {
+    function playDrone(freq: number, startTime: number, duration: number, volume: number, endFreq?: number) {
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
       
-      osc.type = isDing ? 'sine' : 'triangle';
+      osc.type = 'sine';
       osc.frequency.setValueAtTime(freq, startTime);
-      
-      if (!isDing) {
-        // "wing" slide effect
-        osc.frequency.exponentialRampToValueAtTime(freq * 1.5, startTime + duration);
+      if (endFreq) {
+        osc.frequency.exponentialRampToValueAtTime(endFreq, startTime + duration * 0.8);
       }
 
       gain.gain.setValueAtTime(0, startTime);
-      gain.gain.linearRampToValueAtTime(volume, startTime + 0.02);
+      gain.gain.linearRampToValueAtTime(volume, startTime + 0.5); // Slow attack
+      gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
       
-      if (isDing) {
-        gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
-      } else {
-        gain.gain.linearRampToValueAtTime(0, startTime + duration);
-      }
-
       osc.connect(gain);
       gain.connect(audioCtx.destination);
       
@@ -152,12 +145,16 @@
       osc.stop(startTime + duration);
     }
 
-    // "wing" - quick rising chirp
-    playPart(440, now, 0.1, 0.1); 
-    // "a" - short bridge note
-    playPart(659.25, now + 0.12, 0.05, 0.08);
-    // "ding" - resonant high bell
-    playPart(1318.51, now + 0.2, 1.5, 0.12, true);
+    // "Wiiiiiiing" - A long, rising foundation (C3 -> G3)
+    playDrone(130.81, now, 4.0, 0.1, 196.00); 
+    
+    // "aaaaa" - A soft middle layer entering later
+    playDrone(261.63, now + 1.2, 3.5, 0.08); // C4
+    
+    // "Diiiiiinnnnng" - The high, shimmering finish
+    playDrone(523.25, now + 2.0, 5.0, 0.1); // C5
+    playDrone(659.25, now + 2.2, 5.0, 0.05); // E5
+    playDrone(783.99, now + 2.4, 5.0, 0.03); // G5
   }
 
   const handleBootComplete = async (audioCtx: AudioContext) => {
