@@ -122,30 +122,40 @@
   });
 
   function playStartupSound(audioCtx: AudioContext) {
-    function playNote(freq: number, startTime: number, duration: number, volume: number) {
+    const now = audioCtx.currentTime;
+    
+    // Master volume control (Lowered for a softer feel)
+    const masterGain = audioCtx.createGain();
+    masterGain.gain.setValueAtTime(0, now);
+    masterGain.gain.linearRampToValueAtTime(0.08, now + 0.2);
+    masterGain.gain.exponentialRampToValueAtTime(0.001, now + 4);
+    masterGain.connect(audioCtx.destination);
+
+    // Filter for a smooth, glassy sweep
+    const filter = audioCtx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(100, now);
+    filter.frequency.exponentialRampToValueAtTime(5000, now + 2);
+    filter.Q.setValueAtTime(2, now); // Lower resonance for softness
+    filter.connect(masterGain);
+
+    function createTone(freq: number, type: OscillatorType, startTime: number = 0) {
       const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(freq, startTime);
-      
-      gain.gain.setValueAtTime(0, startTime);
-      gain.gain.linearRampToValueAtTime(volume, startTime + 0.05);
-      gain.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
-      
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      
-      osc.start(startTime);
-      osc.stop(startTime + duration);
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, now + startTime);
+      osc.connect(filter);
+      osc.start(now + startTime);
+      osc.stop(now + 4);
     }
 
-    const now = audioCtx.currentTime;
-    // Cyber chime: C4 -> G4 -> C5 -> E5
-    playNote(261.63, now, 1.5, 0.2);       // C4
-    playNote(392.00, now + 0.1, 1.5, 0.15); // G4
-    playNote(523.25, now + 0.2, 2.0, 0.1);  // C5
-    playNote(659.25, now + 0.3, 2.5, 0.05); // E5
+    // A high-pitched, elegant Cmaj9 chord using sines for maximum softness
+    createTone(130.81, 'sine');      // C3
+    createTone(261.63, 'sine');      // C4
+    createTone(392.00, 'sine');      // G4
+    createTone(523.25, 'sine', 0.1); // C5
+    createTone(659.25, 'sine', 0.2); // E5
+    createTone(987.77, 'sine', 0.3); // B5
+    createTone(1174.66, 'sine', 0.4); // D6
   }
 
   const handleBootComplete = async (audioCtx: AudioContext) => {
