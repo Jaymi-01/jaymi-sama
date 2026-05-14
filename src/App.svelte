@@ -6,7 +6,6 @@
   
   import Taskbar from './lib/components/Taskbar.svelte';
   import DesktopIcon from './lib/components/DesktopIcon.svelte';
-  import DesktopFolder from './lib/components/DesktopFolder.svelte';
   import Window from './lib/components/Window.svelte';
   import Startup from './lib/components/Startup.svelte';
   
@@ -93,17 +92,20 @@
 
   // Handle Boot and Cursor Logic in $effect
   $effect(() => {
-    if (isBooted && cursorRef && cursorOuterRef) {
+    const cRef = cursorRef;
+    const coRef = cursorOuterRef;
+
+    if (isBooted && cRef && coRef) {
       const handleMouseMove = (e: MouseEvent) => {
-        gsap.to(cursorRef, { x: e.clientX, y: e.clientY, duration: 0.1, ease: 'none' });
-        gsap.to(cursorOuterRef, { x: e.clientX, y: e.clientY, duration: 0.3, ease: 'power2.out' });
+        gsap.to(cRef, { x: e.clientX, y: e.clientY, duration: 0.1, ease: 'none' });
+        gsap.to(coRef, { x: e.clientX, y: e.clientY, duration: 0.3, ease: 'power2.out' });
       };
 
       const handleMouseOver = (e: MouseEvent) => {
         const target = e.target as HTMLElement;
         if (target.closest('a, button, [role="button"], .project-card')) {
-          gsap.to(cursorOuterRef, { scale: 1.4, rotation: 45, duration: 0.4, ease: 'back.out(2)' });
-          gsap.to(cursorRef, { backgroundColor: themeManager.currentTheme.accent2, scale: 1.5, shadow: `0 0 12px ${themeManager.currentTheme.accent2}`, duration: 0.3 });
+          gsap.to(coRef, { scale: 1.4, rotation: 45, duration: 0.4, ease: 'back.out(2)' });
+          gsap.to(cRef, { backgroundColor: themeManager.currentTheme.accent2, scale: 1.5, shadow: `0 0 12px ${themeManager.currentTheme.accent2}`, duration: 0.3 });
           gsap.to('.cursor-bracket', { borderColor: themeManager.currentTheme.accent2, duration: 0.3 });
         }
       };
@@ -111,8 +113,8 @@
       const handleMouseOut = (e: MouseEvent) => {
         const target = e.target as HTMLElement;
         if (target.closest('a, button, [role="button"], .project-card')) {
-          gsap.to(cursorOuterRef, { scale: 1, rotation: 0, duration: 0.4, ease: 'power2.out' });
-          gsap.to(cursorRef, { backgroundColor: themeManager.currentTheme.accent1, scale: 1, shadow: `0 0 8px ${themeManager.currentTheme.accent1}`, duration: 0.3 });
+          gsap.to(coRef, { scale: 1, rotation: 0, duration: 0.4, ease: 'power2.out' });
+          gsap.to(cRef, { backgroundColor: themeManager.currentTheme.accent1, scale: 1, shadow: `0 0 8px ${themeManager.currentTheme.accent1}`, duration: 0.3 });
           gsap.to('.cursor-bracket', { borderColor: themeManager.currentTheme.accent1, duration: 0.3 });
         }
       };
