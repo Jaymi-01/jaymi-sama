@@ -54,20 +54,19 @@
         <Power size={48} weight="bold" class="text-night-pink group-hover:drop-shadow-[0_0_8px_#00E8FF] transition-all" />
       </div>
       <span class="text-[10px] font-bold uppercase tracking-[0.5em] text-white/40 group-hover:text-night-pink transition-colors animate-pulse">
-        Initiate_System
+        Initiate System
       </span>
     </button>
   {:else}
     <!-- Logo -->
     <div bind:this={logoRef} class="mb-8 md:mb-12 relative">
-      <div class="absolute inset-0 bg-night-pink blur-2xl opacity-20 animate-pulse"></div>
       <img src="/JS-favicon.png" alt="OS Logo" class="w-24 h-24 md:w-32 md:h-32 relative z-10" />
     </div>
 
     <!-- Progress Bar Container -->
     <div class="w-full max-w-[280px] md:max-w-sm">
       <div class="flex justify-between text-[8px] md:text-[10px] text-white/40 mb-2 uppercase tracking-widest">
-        <span>Booting_Sequence</span>
+        <span>Booting Sequence</span>
         <span>{progress}%</span>
       </div>
       <div class="w-full h-1 bg-white/5 overflow-hidden">
