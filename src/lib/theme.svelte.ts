@@ -15,8 +15,8 @@ export const themes: Theme[] = [
   {
     name: 'Classic Terminal',
     black: '#0A0E05',
-    accent1: '#00FF41', // Matrix Green
-    accent2: '#D1FFBD'
+    accent1: '#C88453', // User's requested color
+    accent2: '#E6B89C'  // Lighter shade for contrast
   },
   {
     name: 'Mocha Mousse',
