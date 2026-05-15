@@ -3,9 +3,10 @@
 @import "tailwindcss";
 
 @theme {
-  --color-night-black: #101014;
-  --color-night-pink: #00E8FF;
-  --color-night-lime: #C88453;
+  --color-night-black: #0D0F0D;
+  --color-night-pink: #4ADE80;
+  --color-night-lime: #E8F5E8;
+  --color-night-dark: #1A2B1A;
 
   --font-clash: "Clash Display", sans-serif;
   --font-jetbrains: "JetBrains Mono", monospace;
@@ -34,6 +35,11 @@ input:-webkit-autofill:active {
   background-color: var(--color-night-black);
   color: #FFFFFF;
   font-family: var(--font-jetbrains);
+}
+
+::selection {
+  background-color: var(--color-night-dark);
+  color: var(--color-night-pink);
 }
 
 h1, h2, h3, h4, h5, h6 {
