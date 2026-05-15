@@ -196,7 +196,7 @@
     </div>
   
     <!-- Grid Background -->
-    <div class="absolute inset-0 bg-[linear-gradient(rgba(0,232,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(0,232,255,0.05)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none overflow-hidden">
+    <div class="absolute inset-0 bg-[linear-gradient(var(--color-night-dark)_1px,transparent_1px),linear-gradient(90deg,var(--color-night-dark)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none opacity-20 overflow-hidden">
       <!-- Grid Sparks -->
       <div class="grid-spark grid-spark-1"></div>
       <div class="grid-spark grid-spark-2"></div>
@@ -204,7 +204,7 @@
     </div>
   
     <!-- Desktop Icons -->
-    <div class="absolute top-8 left-4 right-4 md:left-8 md:right-auto grid grid-cols-3 sm:grid-cols-4 md:flex md:flex-col gap-2 md:gap-4">
+    <div class="absolute top-8 left-4 right-4 md:left-8 md:right-auto grid grid-cols-3 sm:grid-cols-4 md:flex md:flex-col md:flex-wrap gap-2 md:gap-4 max-h-[calc(100vh-6rem)]">
       {#each windows as win}
         <DesktopIcon title={win.title} icon={win.icon} onClick={() => openWindow(win.id)} />
       {/each}
@@ -240,7 +240,7 @@
     />
   
     <!-- Custom Cursor -->
-    <div bind:this={cursorRef} class="fixed w-1.5 h-1.5 bg-night-pink pointer-events-none z-[99999] -translate-x-1/2 -translate-y-1/2 hidden md:block shadow-[0_0_8px_#00E8FF]"></div>
+    <div bind:this={cursorRef} class="fixed w-1.5 h-1.5 bg-night-pink pointer-events-none z-[99999] -translate-x-1/2 -translate-y-1/2 hidden md:block shadow-[0_0_8px_var(--color-night-pink)]"></div>
     <div bind:this={cursorOuterRef} class="fixed w-8 h-8 pointer-events-none z-[99998] -translate-x-1/2 -translate-y-1/2 hidden md:block">
       <div class="absolute top-0 left-0 w-2 h-2 border-t border-l border-night-pink transition-colors cursor-bracket"></div>
       <div class="absolute top-0 right-0 w-2 h-2 border-t border-r border-night-pink transition-colors cursor-bracket"></div>
@@ -252,7 +252,7 @@
 
 <style>
   :global(body) {
-    background-color: #101014;
+    background-color: var(--color-night-black);
     margin: 0;
     overflow: hidden;
   }
