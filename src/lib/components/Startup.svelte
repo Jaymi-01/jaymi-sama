@@ -51,7 +51,7 @@
     >
       <div class="w-24 h-24 rounded-full border-2 border-night-pink/20 flex items-center justify-center relative group-hover:border-night-pink transition-colors">
         <div class="absolute inset-0 bg-night-pink/5 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
-        <Power size={48} weight="bold" class="text-night-pink group-hover:drop-shadow-[0_0_8px_#00E8FF] transition-all" />
+        <Power size={48} weight="bold" class="text-night-pink group-hover:drop-shadow-[0_0_8px_var(--color-night-pink)] transition-all" />
       </div>
       <span class="text-[10px] font-bold uppercase tracking-[0.5em] text-white/40 group-hover:text-night-pink transition-colors animate-pulse">
         Initiate System
@@ -71,7 +71,7 @@
       </div>
       <div class="w-full h-1 bg-white/5 overflow-hidden">
         <div 
-          class="h-full bg-night-pink shadow-[0_0_10px_#00E8FF]" 
+          class="h-full bg-night-pink shadow-[0_0_10px_var(--color-night-pink)]" 
           style="width: {progress}%"
         ></div>
       </div>
