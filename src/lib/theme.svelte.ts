@@ -13,10 +13,10 @@ export const themes: Theme[] = [
     accent2: '#E8D9FF'
   },
   {
-    name: 'Classic Terminal',
-    black: '#0A0E05',
-    accent1: '#C88453', // User's requested color
-    accent2: '#E6B89C'  // Lighter shade for contrast
+    name: 'Terminal Phosphor',
+    black: '#0D0F0D',   // Near-black green
+    accent1: '#4ADE80', // Phosphor Green
+    accent2: '#E8F5E8'  // Ghost White (Headings)
   },
   {
     name: 'Mocha Mousse',
