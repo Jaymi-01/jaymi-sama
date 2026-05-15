@@ -180,7 +180,7 @@
     </div>
 
     <!-- Content Area -->
-    <div class="flex-grow overflow-y-auto overflow-x-hidden p-6 bg-night-black/95 custom-scrollbar {isMinimized ? 'hidden' : 'block'} {isMaximized && (id === 'about' || id === 'contact') ? 'flex flex-col items-center' : ''}">
+    <div class="flex-grow overflow-y-auto overflow-x-hidden p-6 bg-night-black/95 custom-scrollbar {isMinimized ? 'hidden' : 'block'} {isMaximized && (id === 'about' || id === 'contact' || id === 'settings') ? 'flex flex-col items-center' : ''}">
       {@render children?.()}
     </div>
   </div>
