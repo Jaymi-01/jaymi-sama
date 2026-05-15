@@ -75,8 +75,8 @@
     const win = windows.find(w => w.id === id);
     if (win) {
       win.isMaximized = !win.isMaximized;
+      win.isMinimized = false; // Always clear minimized state when maximizing/restoring
       if (win.isMaximized) {
-        win.isMinimized = false;
         focusWindow(id);
       }
     }
