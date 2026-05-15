@@ -32,28 +32,9 @@
     if (isOpen && el) {
       // Opening animation
       gsap.fromTo(el, 
-        { scale: 0.9, opacity: 0, filter: 'blur(10px)' },
-        { scale: 1, opacity: 1, filter: 'blur(0px)', duration: 0.4, ease: 'power4.out' }
+        { scale: 0.9, opacity: 0, filter: 'blur(10px)', y: 20 },
+        { scale: 1, opacity: 1, filter: 'blur(0px)', y: 0, duration: 0.4, ease: 'power4.out' }
       );
-    }
-  });
-
-  $effect(() => {
-    const el = windowRef;
-    if (el) {
-      if (isMaximized) {
-        gsap.to(el, {
-          duration: 0.5,
-          ease: 'expo.out',
-          overwrite: 'auto'
-        });
-      } else {
-        gsap.to(el, {
-          duration: 0.5,
-          ease: 'expo.out',
-          overwrite: 'auto'
-        });
-      }
     }
   });
 
@@ -62,17 +43,22 @@
     if (el) {
       if (isMinimized) {
         gsap.to(el, {
-          scale: 0.8,
-          opacity: 0.5,
+          scale: 0.9,
+          opacity: 0,
+          y: 20,
           duration: 0.3,
-          ease: 'power2.inOut'
+          ease: 'power2.in',
+          pointerEvents: 'none'
         });
       } else {
         gsap.to(el, {
           scale: 1,
           opacity: 1,
-          duration: 0.3,
-          ease: 'power2.inOut'
+          y: 0,
+          duration: 0.4,
+          ease: 'power4.out',
+          pointerEvents: 'auto',
+          clearProps: 'filter'
         });
       }
     }
