@@ -20,7 +20,7 @@
   let terminalRef = $state<HTMLElement>();
   let inputRef = $state<HTMLInputElement>();
 
-  const systemModules = {
+  const systemModules: Record<string, string> = {
     'system_info.sh': 'about',
     'modules.bin': 'projects',
     'secure_link.exe': 'contact',
