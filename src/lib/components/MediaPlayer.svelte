@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
-  import { Play, Pause, SkipBack, SkipForward, MusicNotes, SpeakerHigh, SpeakerLow, SpeakerSlash } from 'phosphor-svelte';
+  import { Play, Pause, SkipBack, SkipForward, MusicNotes, SpeakerHigh, SpeakerLow, SpeakerSlash, Shuffle, Repeat, RepeatOnce } from 'phosphor-svelte';
 
   const playlist = [
     { title: "Africa", artist: "Toto", src: "/music/Africa.mp3" },
@@ -31,6 +31,8 @@
   let duration = $state(0);
   let volume = $state(0.5);
   let isMuted = $state(false);
+  let isShuffled = $state(false);
+  let repeatMode = $state<'off' | 'all' | 'one'>('off');
   
   let audio: HTMLAudioElement;
   let canvas: HTMLCanvasElement;
@@ -100,7 +102,16 @@
   }
 
   function nextTrack() {
-    currentIndex = (currentIndex + 1) % playlist.length;
+    if (isShuffled) {
+      let nextIndex;
+      do {
+        nextIndex = Math.floor(Math.random() * playlist.length);
+      } while (nextIndex === currentIndex && playlist.length > 1);
+      currentIndex = nextIndex;
+    } else {
+      currentIndex = (currentIndex + 1) % playlist.length;
+    }
+    currentTime = 0;
     if (isPlaying) {
       setTimeout(() => audio.play(), 0);
     }
@@ -108,6 +119,7 @@
 
   function prevTrack() {
     currentIndex = (currentIndex - 1 + playlist.length) % playlist.length;
+    currentTime = 0;
     if (isPlaying) {
       setTimeout(() => audio.play(), 0);
     }
@@ -115,9 +127,33 @@
 
   function handleTrackSelect(index: number) {
     currentIndex = index;
+    currentTime = 0;
     if (!audioContext) initAudio();
     isPlaying = true;
     setTimeout(() => audio.play(), 0);
+  }
+
+  function handleTrackEnd() {
+    if (repeatMode === 'one') {
+      audio.currentTime = 0;
+      audio.play();
+    } else if (repeatMode === 'all' || isShuffled) {
+      nextTrack();
+    } else if (currentIndex < playlist.length - 1) {
+      nextTrack();
+    } else {
+      isPlaying = false;
+    }
+  }
+
+  function toggleShuffle() {
+    isShuffled = !isShuffled;
+  }
+
+  function toggleRepeat() {
+    const modes: ('off' | 'all' | 'one')[] = ['off', 'all', 'one'];
+    const currentIdx = modes.indexOf(repeatMode);
+    repeatMode = modes[(currentIdx + 1) % modes.length];
   }
 
   function formatTime(seconds: number) {
@@ -127,7 +163,33 @@
   }
 
   onMount(() => {
+    // Load persisted state
+    const savedState = localStorage.getItem('night_os_media_state');
+    if (savedState) {
+      const state = JSON.parse(savedState);
+      if (state.index < playlist.length) {
+        currentIndex = state.index;
+        isShuffled = state.shuffled || false;
+        repeatMode = state.repeat || 'off';
+        // Small delay to ensure audio element is ready for seeking
+        setTimeout(() => {
+          if (audio) audio.currentTime = state.time;
+        }, 100);
+      }
+    }
+
     audio.volume = volume;
+  });
+
+  // Save state whenever index or time changes significantly
+  $effect(() => {
+    const state = {
+      index: currentIndex,
+      time: currentTime,
+      shuffled: isShuffled,
+      repeat: repeatMode
+    };
+    localStorage.setItem('night_os_media_state', JSON.stringify(state));
   });
 
   onDestroy(() => {
@@ -185,9 +247,17 @@
     </div>
 
     <!-- Main Buttons -->
-    <div class="flex items-center justify-center gap-8">
+    <div class="flex items-center justify-center gap-6">
+      <button 
+        onclick={toggleShuffle} 
+        class="transition-colors {isShuffled ? 'text-night-pink drop-shadow-[0_0_8px_var(--color-night-pink)]' : 'text-white/20 hover:text-white/40'}"
+        title="Shuffle"
+      >
+        <Shuffle size={18} weight={isShuffled ? 'bold' : 'regular'} />
+      </button>
+
       <button onclick={prevTrack} class="text-white/60 hover:text-white transition-colors">
-        <SkipBack size={24} weight="fill" />
+        <SkipBack size={22} weight="fill" />
       </button>
       
       <button 
@@ -202,7 +272,19 @@
       </button>
 
       <button onclick={nextTrack} class="text-white/60 hover:text-white transition-colors">
-        <SkipForward size={24} weight="fill" />
+        <SkipForward size={22} weight="fill" />
+      </button>
+
+      <button 
+        onclick={toggleRepeat} 
+        class="transition-colors {repeatMode !== 'off' ? 'text-night-pink drop-shadow-[0_0_8px_var(--color-night-pink)]' : 'text-white/20 hover:text-white/40'}"
+        title="Repeat: {repeatMode}"
+      >
+        {#if repeatMode === 'one'}
+          <RepeatOnce size={18} weight="bold" />
+        {:else}
+          <Repeat size={18} weight={repeatMode === 'all' ? 'bold' : 'regular'} />
+        {/if}
       </button>
     </div>
 
@@ -271,7 +353,7 @@
     onpause={() => isPlaying = false}
     ontimeupdate={() => currentTime = audio.currentTime}
     onloadedmetadata={() => duration = audio.duration}
-    onended={nextTrack}
+    onended={handleTrackEnd}
   ></audio>
 </div>
 
