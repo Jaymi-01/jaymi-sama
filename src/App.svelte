@@ -8,6 +8,7 @@
   import DesktopIcon from './lib/components/DesktopIcon.svelte';
   import Window from './lib/components/Window.svelte';
   import Startup from './lib/components/Startup.svelte';
+  import ShutdownModal from './lib/components/ShutdownModal.svelte';
   
   import About from './lib/components/About.svelte';
   import Projects from './lib/components/Projects.svelte';
@@ -17,6 +18,7 @@
   import { Gear } from 'phosphor-svelte';
 
   let isBooted = $state(false);
+  let isShutdownModalOpen = $state(false);
   let windows = $state([
     { id: 'about', title: 'System_Info.sh', component: About, isOpen: false, isMinimized: false, isMaximized: false, zIndex: 10, icon: User },
     { id: 'projects', title: 'Modules.bin', component: Projects, isOpen: false, isMinimized: false, isMaximized: false, zIndex: 10, icon: Code },
@@ -183,6 +185,21 @@
   function downloadResume() {
     window.open('/Joel-Miller-Resume.pdf', '_blank');
   }
+
+  function handlePowerClick() {
+    isShutdownModalOpen = true;
+  }
+
+  function handleShutdownConfirm() {
+    isShutdownModalOpen = false;
+    isBooted = false;
+    // Reset window states
+    windows.forEach(w => {
+      w.isOpen = false;
+      w.isMinimized = false;
+      w.isMaximized = false;
+    });
+  }
 </script>
 
 {#if !isBooted}
@@ -237,6 +254,13 @@
       openWindows={openWindows.map(w => ({ id: w.id, title: w.title }))} 
       activeWindowId={activeWindowId}
       onWindowClick={(id) => toggleWindow(id)} 
+      onPowerClick={handlePowerClick}
+    />
+
+    <ShutdownModal 
+      isOpen={isShutdownModalOpen} 
+      onClose={() => (isShutdownModalOpen = false)} 
+      onConfirm={handleShutdownConfirm} 
     />
   
     <!-- Custom Cursor -->
