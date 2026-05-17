@@ -4,25 +4,33 @@
 
   const playlist = [
     { title: "Africa", artist: "Toto", src: "/music/Africa.mp3" },
+    { title: "All Too Well (10min)", artist: "Taylor Swift", src: "/music/All To Well (10 Minutes Version).mp3" },
+    { title: "Back To December", artist: "Taylor Swift", src: "/music/Back To December.mp3" },
+    { title: "Blank Space", artist: "Taylor Swift", src: "/music/Blank Space.mp3" },
     { title: "Blue Bird", artist: "Naruto Shippuden", src: "/music/Blue Bird.mp3" },
     { title: "Can't Stop", artist: "Red Hot Chili Peppers", src: "/music/Can't Stop.mp3" },
+    { title: "Cardigan", artist: "Taylor Swift", src: "/music/Cardigan.mp3" },
     { title: "From The Start", artist: "Laufey", src: "/music/From The Start.mp3" },
     { title: "Gurenge", artist: "LiSA", src: "/music/Gurenge.mp3" },
     { title: "Just A Man", artist: "Epic: The Musical", src: "/music/Just A Man.mp3" },
     { title: "Kill Bill", artist: "SZA", src: "/music/Kill Bill.mp3" },
-    { title: "Legendary", artist: "Epic: The Musical", src: "/music/Legendary.mp3" },
+    { title: "Legendary", artist: "Welshly Arms", src: "/music/Legendary.mp3" },
     { title: "Love In Paradise", artist: "Epic: The Musical", src: "/music/Love In Paradise.mp3" },
-    { title: "Not Sorry For Loving You", artist: "Epic: The Musical", src: "/music/Not Sorry For Loving You.mp3" },
+    { title: "My Boy...", artist: "Taylor Swift", src: "/music/My Boy Only Breaks His Favorite Toy.mp3" },
+    { title: "Not Sorry...", artist: "Epic: The Musical", src: "/music/Not Sorry For Loving You.mp3" },
     { title: "Renai Circulation", artist: "Bakemonogatari", src: "/music/Renai Circulation.mp3" },
     { title: "Shinzou wo Sasageyo", artist: "Linked Horizon", src: "/music/Shinzou wo Sasageyo.mp3" },
     { title: "Silhouette", artist: "KANA-BOON", src: "/music/Silhouette.mp3" },
     { title: "Specialz", artist: "King Gnu", src: "/music/Specialz.mp3" },
     { title: "Sunflower", artist: "Post Malone", src: "/music/Sunflower.mp3" },
     { title: "The Challenge", artist: "Epic: The Musical", src: "/music/The Challenge.mp3" },
+    { title: "The Fate Of Ophelia", artist: "Taylor Swift", src: "/music/The Fate Of Ophelia.mp3" },
     { title: "We Are Young", artist: "fun. Ft. Janelle Monáe", src: "/music/We Are Young.mp3" },
     { title: "We Are!", artist: "Hiroshi Kitadani", src: "/music/We Are!.mp3" },
+    { title: "Wildflower", artist: "Billie Eilish", src: "/music/Wildflower.mp3" },
     { title: "Wind", artist: "Akeboshi", src: "/music/Wind.mp3" },
-    { title: "Would You Fall In Love With Me Again", artist: "Epic: The Musical", src: "/music/Would You Fall In Love With Me Again.mp3" }
+    { title: "Would You Fall...", artist: "Epic: The Musical", src: "/music/Would You Fall In Love With Me Again.mp3" },
+    { title: "You're Losing Me", artist: "Taylor Swift", src: "/music/You're Losing Me.mp3" }
   ];
 
   let currentIndex = $state(0);
