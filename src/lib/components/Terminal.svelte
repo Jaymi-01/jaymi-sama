@@ -1,6 +1,13 @@
 <script lang="ts">
   import { onMount, tick } from 'svelte';
 
+  interface Props {
+    onExecuteCommand?: (cmd: string) => void;
+    [key: string]: any;
+  }
+
+  let { onExecuteCommand }: Props = $props();
+
   let input = $state('');
   let history = $state<{ type: 'input' | 'output' | 'error', text: string }[]>([
     { type: 'output', text: 'NIGHT_OS TERMINAL [Version 1.0.42]' },
@@ -13,23 +20,35 @@
   let terminalRef = $state<HTMLElement>();
   let inputRef = $state<HTMLInputElement>();
 
+  const systemModules = {
+    'system_info.sh': 'about',
+    'modules.bin': 'projects',
+    'secure_link.exe': 'contact',
+    'settings.sys': 'settings',
+    'about': 'about',
+    'projects': 'projects',
+    'contact': 'contact',
+    'settings': 'settings'
+  };
+
   const commands: Record<string, () => void> = {
     help: () => {
       addOutput('Available commands:');
       addOutput('  help      - Show this help message');
       addOutput('  ls        - List available system modules');
+      addOutput('  open [mod]- Open a specific system module');
       addOutput('  clear     - Clear terminal history');
       addOutput('  whoami    - Display current user info');
       addOutput('  date      - Display current system date');
-      addOutput('  exit      - Terminate terminal session');
       addOutput('  echo [msg]- Print message to terminal');
+      addOutput('');
+      addOutput('Hint: You can type a module name directly to open it.');
     },
     ls: () => {
       addOutput('System_Info.sh');
       addOutput('Modules.bin');
       addOutput('Secure_Link.exe');
       addOutput('Settings.sys');
-      addOutput('Resume.pdf');
     },
     clear: () => {
       history = [];
@@ -39,9 +58,6 @@
     },
     date: () => {
       addOutput(new Date().toString());
-    },
-    exit: () => {
-      addOutput('Terminal session cannot be terminated via command. Use window controls.');
     }
   };
 
@@ -52,7 +68,8 @@
   async function handleKeydown(e: KeyboardEvent) {
     if (e.key === 'Enter') {
       const trimmedInput = input.trim();
-      const [cmd, ...args] = trimmedInput.toLowerCase().split(' ');
+      const lowerInput = trimmedInput.toLowerCase();
+      const [cmd, ...args] = lowerInput.split(' ');
 
       history = [...history, { type: 'input', text: `> ${trimmedInput}` }];
       
@@ -61,6 +78,17 @@
           commands[cmd]();
         } else if (cmd === 'echo') {
           addOutput(args.join(' '));
+        } else if (cmd === 'open' && args[0]) {
+          const moduleId = systemModules[args[0]];
+          if (moduleId) {
+            addOutput(`Opening ${args[0]}...`);
+            onExecuteCommand?.(moduleId);
+          } else {
+            addOutput(`Module not found: ${args[0]}`, 'error');
+          }
+        } else if (systemModules[cmd]) {
+          addOutput(`Opening ${trimmedInput}...`);
+          onExecuteCommand?.(systemModules[cmd]);
         } else {
           addOutput(`Command not found: ${cmd}`, 'error');
         }
