@@ -24,10 +24,12 @@
     'system_info.sh': 'about',
     'modules.bin': 'projects',
     'secure_link.exe': 'contact',
+    'media_player.exe': 'media',
     'settings.sys': 'settings',
     'about': 'about',
     'projects': 'projects',
     'contact': 'contact',
+    'media': 'media',
     'settings': 'settings'
   };
 
