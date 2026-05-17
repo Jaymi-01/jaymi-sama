@@ -302,7 +302,7 @@
 
 <div class="flex flex-col h-full bg-night-black/40 font-jetbrains select-none">
   <!-- Visualizer Header -->
-  <div class="h-44 relative border-b border-white/5 overflow-hidden">
+  <div class="h-44 relative border-b border-white/5 overflow-hidden shrink-0">
     <canvas
       bind:this={canvas}
       width="400"
@@ -310,7 +310,7 @@
       class="w-full h-full opacity-30"
     ></canvas>
     <div
-      class="absolute inset-0 flex flex-col items-center justify-end pb-6 px-6 bg-gradient-to-t from-night-black/90 via-night-black/40 to-transparent"
+      class="absolute inset-0 flex flex-col items-center justify-end pb-6 px-6 bg-gradient-to-t from-night-black/90 via-night-black/40 to-transparent z-10"
     >
       <h3
         class="text-white font-bold tracking-[0.2em] uppercase text-sm truncate w-full text-center drop-shadow-lg"
@@ -326,7 +326,7 @@
   </div>
 
   <!-- Controls -->
-  <div class="p-4 space-y-4">
+  <div class="p-4 space-y-4 shrink-0">
     <!-- Progress Bar -->
     <div class="space-y-2 px-2">
       <div
