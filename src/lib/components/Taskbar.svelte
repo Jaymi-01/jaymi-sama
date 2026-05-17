@@ -1,14 +1,15 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { Cpu, BatteryCharging, BatteryHigh, BatteryMedium, BatteryLow, WifiHigh, WifiSlash, SpeakerHigh, SpeakerSlash } from 'phosphor-svelte';
+  import { Power, BatteryCharging, BatteryHigh, BatteryMedium, BatteryLow, WifiHigh, WifiSlash, SpeakerHigh, SpeakerSlash } from 'phosphor-svelte';
 
   interface Props {
     openWindows: { id: string; title: string }[];
     activeWindowId: string | null;
     onWindowClick: (id: string) => void;
+    onPowerClick: () => void;
   }
 
-  let { openWindows, activeWindowId, onWindowClick }: Props = $props();
+  let { openWindows, activeWindowId, onWindowClick, onPowerClick }: Props = $props();
 
   let time = $state('');
   let dateString = $state('');
@@ -76,8 +77,12 @@
 
 <div class="fixed bottom-0 left-0 w-full h-14 bg-black/80 backdrop-blur-md border-t border-white/10 flex items-center justify-between px-4 z-[10000]">
   <div class="flex items-center gap-4 h-full">
-    <button class="h-10 w-10 flex items-center justify-center bg-night-pink text-white hover:bg-night-lime hover:text-black transition-colors">
-      <Cpu size={24} weight="bold" />
+    <button 
+      onclick={onPowerClick}
+      class="h-10 w-10 flex items-center justify-center bg-night-pink text-white hover:bg-night-lime hover:text-black transition-colors"
+      title="Shut Down"
+    >
+      <Power size={24} weight="bold" />
     </button>
     
     <div class="flex gap-1 h-full py-1.5 overflow-x-auto no-scrollbar max-w-[40vw] sm:max-w-none">
