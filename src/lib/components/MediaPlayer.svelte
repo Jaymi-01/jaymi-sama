@@ -194,7 +194,7 @@
     isPlaying = !isPlaying;
   }
 
-  function nextTrack() {
+  function nextTrack(forcePlay = false) {
     if (isShuffled) {
       let nextIndex;
       do {
@@ -205,8 +205,11 @@
       currentIndex = (currentIndex + 1) % playlist.length;
     }
     currentTime = 0;
-    if (isPlaying) {
-      setTimeout(() => audio.play(), 0);
+    
+    const shouldPlay = isPlaying || forcePlay;
+    if (shouldPlay) {
+      isPlaying = true;
+      setTimeout(() => audio.play().catch(console.error), 50);
     }
   }
 
@@ -214,7 +217,7 @@
     currentIndex = (currentIndex - 1 + playlist.length) % playlist.length;
     currentTime = 0;
     if (isPlaying) {
-      setTimeout(() => audio.play(), 0);
+      setTimeout(() => audio.play().catch(console.error), 50);
     }
   }
 
@@ -223,17 +226,17 @@
     currentTime = 0;
     if (!audioContext) initAudio();
     isPlaying = true;
-    setTimeout(() => audio.play(), 0);
+    setTimeout(() => audio.play().catch(console.error), 50);
   }
 
   function handleTrackEnd() {
     if (repeatMode === "one") {
       audio.currentTime = 0;
-      audio.play();
+      audio.play().catch(console.error);
     } else if (repeatMode === "all" || isShuffled) {
-      nextTrack();
+      nextTrack(true);
     } else if (currentIndex < playlist.length - 1) {
-      nextTrack();
+      nextTrack(true);
     } else {
       isPlaying = false;
     }
@@ -386,10 +389,7 @@
         {/if}
       </button>
 
-      <button
-        onclick={nextTrack}
-        class="text-white/60 hover:text-white transition-colors"
-      >
+      <button onclick={() => nextTrack()} class="text-white/60 hover:text-white transition-colors">
         <SkipForward size={22} weight="fill" />
       </button>
 
