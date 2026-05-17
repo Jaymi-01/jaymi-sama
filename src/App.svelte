@@ -9,6 +9,7 @@
   import Window from './lib/components/Window.svelte';
   import Startup from './lib/components/Startup.svelte';
   import ShutdownModal from './lib/components/ShutdownModal.svelte';
+  import ShutdownSequence from './lib/components/ShutdownSequence.svelte';
   
   import About from './lib/components/About.svelte';
   import Projects from './lib/components/Projects.svelte';
@@ -18,6 +19,7 @@
   import { Gear } from 'phosphor-svelte';
 
   let isBooted = $state(false);
+  let isShuttingDown = $state(false);
   let isShutdownModalOpen = $state(false);
   let windows = $state([
     { id: 'about', title: 'System_Info.sh', component: About, isOpen: false, isMinimized: false, isMaximized: false, zIndex: 10, icon: User },
@@ -192,6 +194,11 @@
 
   function handleShutdownConfirm() {
     isShutdownModalOpen = false;
+    isShuttingDown = true;
+  }
+
+  function handleShutdownComplete() {
+    isShuttingDown = false;
     isBooted = false;
     // Reset window states
     windows.forEach(w => {
@@ -202,7 +209,9 @@
   }
 </script>
 
-{#if !isBooted}
+{#if isShuttingDown}
+  <ShutdownSequence onComplete={handleShutdownComplete} />
+{:else if !isBooted}
   <Startup onComplete={handleBootComplete} />
 {:else}
   <div in:fade={{ duration: 1000 }} class="h-screen w-screen bg-night-black overflow-hidden relative cursor-none select-none">
