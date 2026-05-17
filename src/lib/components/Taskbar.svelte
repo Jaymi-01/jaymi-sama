@@ -79,7 +79,7 @@
   <div class="flex items-center gap-4 h-full">
     <button 
       onclick={onPowerClick}
-      class="h-10 w-10 flex items-center justify-center bg-night-pink text-white hover:bg-night-lime hover:text-black transition-colors"
+      class="h-10 w-10 flex items-center justify-center text-night-pink transition-colors"
       title="Shut Down"
     >
       <Power size={24} weight="bold" />
