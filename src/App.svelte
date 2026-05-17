@@ -15,18 +15,29 @@
   import Projects from './lib/components/Projects.svelte';
   import Contact from './lib/components/Contact.svelte';
   import Settings from './lib/components/Settings.svelte';
+  import Terminal from './lib/components/Terminal.svelte';
   import { themeManager } from './lib/theme.svelte';
-  import { Gear } from 'phosphor-svelte';
+  import { Gear, TerminalWindow } from 'phosphor-svelte';
 
   let isBooted = $state(false);
   let isShuttingDown = $state(false);
   let isShutdownModalOpen = $state(false);
-  let windows = $state([
-    { id: 'about', title: 'System_Info.sh', component: About, isOpen: false, isMinimized: false, isMaximized: false, zIndex: 10, icon: User },
-    { id: 'projects', title: 'Modules.bin', component: Projects, isOpen: false, isMinimized: false, isMaximized: false, zIndex: 10, icon: Code },
-    { id: 'contact', title: 'Secure_Link.exe', component: Contact, isOpen: false, isMinimized: false, isMaximized: false, zIndex: 10, icon: Envelope },
-    { id: 'settings', title: 'Settings.sys', component: Settings, isOpen: false, isMinimized: false, isMaximized: false, zIndex: 10, icon: Gear }
-  ]);
+  
+  const windowConfig = [
+    { id: 'about', title: 'System_Info.sh', component: About, icon: User },
+    { id: 'projects', title: 'Modules.bin', component: Projects, icon: Code },
+    { id: 'contact', title: 'Secure_Link.exe', component: Contact, icon: Envelope },
+    { id: 'terminal', title: 'Terminal.exe', component: Terminal, icon: TerminalWindow },
+    { id: 'settings', title: 'Settings.sys', component: Settings, icon: Gear }
+  ];
+
+  let windows = $state(windowConfig.map(w => ({
+    ...w,
+    isOpen: false,
+    isMinimized: false,
+    isMaximized: false,
+    zIndex: 10
+  })));
 
   let maxZIndex = $state(10);
   let cursorRef = $state<HTMLElement>();
