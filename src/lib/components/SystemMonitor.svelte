@@ -31,7 +31,7 @@
   });
 </script>
 
-<div class="fixed top-8 right-8 w-48 flex flex-col gap-6 font-jetbrains select-none pointer-events-none opacity-40 hover:opacity-100 transition-opacity duration-500 z-0">
+<div class="fixed top-8 right-8 w-48 hidden md:flex flex-col gap-6 font-jetbrains select-none pointer-events-none opacity-40 hover:opacity-100 transition-opacity duration-500 z-0">
   <!-- CPU -->
   <div class="space-y-1">
     <div class="flex justify-between text-[10px] font-bold uppercase tracking-widest text-white/50">
