@@ -264,7 +264,11 @@
             onMaximize={() => maximizeWindow(win.id)}
             onFocus={() => focusWindow(win.id)}
           >
-            <win.component />
+            {#if win.id === 'terminal'}
+              <Terminal onExecuteCommand={(id) => openWindow(id)} />
+            {:else}
+              <win.component />
+            {/if}
           </Window>
         </div>
       {/each}
