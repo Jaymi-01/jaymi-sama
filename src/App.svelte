@@ -17,6 +17,7 @@
   import Settings from './lib/components/Settings.svelte';
   import Terminal from './lib/components/Terminal.svelte';
   import MediaPlayer from './lib/components/MediaPlayer.svelte';
+  import SystemMonitor from './lib/components/SystemMonitor.svelte';
   import { themeManager } from './lib/theme.svelte';
   import { Gear, TerminalWindow, Headphones } from 'phosphor-svelte';
 
@@ -240,6 +241,8 @@
       <div class="grid-spark grid-spark-2"></div>
       <div class="grid-spark grid-spark-3"></div>
     </div>
+
+    <SystemMonitor />
   
     <!-- Desktop Icons -->
     <div class="absolute top-8 left-4 right-4 md:left-8 md:right-auto grid grid-cols-3 sm:grid-cols-4 md:flex md:flex-col md:flex-wrap gap-2 md:gap-4 max-h-[calc(100vh-6rem)]">
