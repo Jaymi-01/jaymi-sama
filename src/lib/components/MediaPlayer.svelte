@@ -301,44 +301,41 @@
 </script>
 
 <div class="flex flex-col h-full bg-night-black/40 font-jetbrains select-none">
-  <!-- Visualizer Header -->
-  <div class="h-44 relative border-b border-white/5 overflow-hidden shrink-0">
+  <!-- Compact Visualizer Header -->
+  <div class="h-32 relative border-b border-white/5 overflow-hidden shrink-0">
     <canvas
       bind:this={canvas}
       width="400"
-      height="176"
+      height="128"
       class="w-full h-full opacity-30"
     ></canvas>
     <div
-      class="absolute inset-0 flex flex-col items-center justify-end pb-6 px-6 bg-gradient-to-t from-night-black/90 via-night-black/40 to-transparent z-10"
+      class="absolute inset-0 flex flex-col items-center justify-end pb-4 px-6 bg-gradient-to-t from-night-black/90 via-night-black/40 to-transparent z-10"
     >
       <h3
-        class="text-white font-bold tracking-[0.2em] uppercase text-sm truncate w-full text-center drop-shadow-lg"
+        class="text-white font-bold tracking-[0.2em] uppercase text-xs truncate w-full text-center drop-shadow-lg"
       >
         {playlist[currentIndex].title}
       </h3>
       <p
-        class="text-night-pink text-[10px] uppercase tracking-[0.3em] opacity-80 mt-1 text-center"
+        class="text-night-pink text-[9px] uppercase tracking-[0.3em] opacity-80 mt-0.5 text-center"
       >
         {playlist[currentIndex].artist}
       </p>
     </div>
   </div>
 
-  <!-- Controls -->
-  <div class="p-4 space-y-4 shrink-0">
+  <!-- Consolidated Controls -->
+  <div class="p-3 space-y-3 shrink-0 bg-white/[0.02]">
     <!-- Progress Bar -->
-    <div class="space-y-2 px-2">
+    <div class="space-y-1.5 px-1">
       <div
-        class="relative w-full h-1.5 bg-white/5 rounded-full overflow-hidden group/progress"
+        class="relative w-full h-1 bg-white/5 rounded-full overflow-hidden group/progress"
       >
-        <!-- Progress Fill -->
         <div
-          class="absolute top-0 left-0 h-full bg-night-pink shadow-[0_0_10px_rgba(255,0,128,0.5)] transition-all duration-100 ease-out"
+          class="absolute top-0 left-0 h-full bg-night-pink shadow-[0_0_8px_rgba(255,0,128,0.5)] transition-all duration-100 ease-out"
           style="width: {(currentTime / duration) * 100 || 0}%"
         ></div>
-
-        <!-- Range Input (Invisible but functional overlay) -->
         <input
           type="range"
           min="0"
@@ -350,117 +347,120 @@
         />
       </div>
       <div
-        class="flex justify-between text-[9px] font-bold text-white/30 uppercase tracking-[0.2em]"
+        class="flex justify-between text-[8px] font-bold text-white/20 uppercase tracking-[0.1em]"
       >
-        <span class={isPlaying ? "text-night-pink/60" : ""}
+        <span class={isPlaying ? "text-night-pink/40" : ""}
           >{formatTime(currentTime)}</span
         >
         <span>{formatTime(duration)}</span>
       </div>
     </div>
 
-    <!-- Main Buttons -->
-    <div class="flex items-center justify-center gap-6">
-      <button
-        onclick={toggleShuffle}
-        class="transition-colors {isShuffled
-          ? 'text-night-pink drop-shadow-[0_0_8px_var(--color-night-pink)]'
-          : 'text-white/20 hover:text-white/40'}"
-        title="Shuffle"
-      >
-        <Shuffle size={18} weight={isShuffled ? "bold" : "regular"} />
-      </button>
+    <!-- Responsive Control Row -->
+    <div class="flex items-center justify-between gap-2 sm:gap-4 px-2 py-1">
+      <!-- Empty spacer to balance the volume on the right -->
+      <div class="hidden sm:block w-20"></div>
 
-      <button
-        onclick={prevTrack}
-        class="text-white/60 hover:text-white transition-colors"
-      >
-        <SkipBack size={22} weight="fill" />
-      </button>
+      <!-- Consolidated Centered Button Group -->
+      <div class="flex items-center justify-center gap-2 sm:gap-4 flex-grow">
+        <button
+          onclick={toggleShuffle}
+          class="transition-colors {isShuffled
+            ? 'text-night-pink'
+            : 'text-white/20 hover:text-white/40'}"
+          title="Shuffle"
+        >
+          <Shuffle size={14} weight={isShuffled ? "bold" : "regular"} />
+        </button>
 
-      <button
-        onclick={togglePlay}
-        class="w-12 h-12 rounded-full bg-night-pink flex items-center justify-center text-white shadow-[0_0_15px_rgba(255,0,128,0.3)] hover:scale-105 active:scale-95 transition-all"
-      >
-        {#if isPlaying}
-          <Pause size={24} weight="fill" />
-        {:else}
-          <Play size={24} weight="fill" class="ml-1" />
-        {/if}
-      </button>
+        <button
+          onclick={prevTrack}
+          class="text-white/40 hover:text-white transition-colors"
+        >
+          <SkipBack size={18} weight="fill" />
+        </button>
 
-      <button onclick={() => nextTrack()} class="text-white/60 hover:text-white transition-colors">
-        <SkipForward size={22} weight="fill" />
-      </button>
+        <button
+          onclick={togglePlay}
+          class="w-9 h-9 rounded-full bg-night-pink flex items-center justify-center text-white shadow-[0_0_10px_rgba(255,0,128,0.3)] hover:scale-105 active:scale-95 transition-all flex-shrink-0"
+        >
+          {#if isPlaying}
+            <Pause size={18} weight="fill" />
+          {:else}
+            <Play size={18} weight="fill" class="ml-0.5" />
+          {/if}
+        </button>
 
-      <button
-        onclick={toggleRepeat}
-        class="transition-colors {repeatMode !== 'off'
-          ? 'text-night-pink drop-shadow-[0_0_8px_var(--color-night-pink)]'
-          : 'text-white/20 hover:text-white/40'}"
-        title="Repeat: {repeatMode}"
-      >
-        {#if repeatMode === "one"}
-          <RepeatOnce size={18} weight="bold" />
-        {:else}
-          <Repeat
-            size={18}
-            weight={repeatMode === "all" ? "bold" : "regular"}
-          />
-        {/if}
-      </button>
-    </div>
+        <button onclick={() => nextTrack()} class="text-white/40 hover:text-white transition-colors">
+          <SkipForward size={18} weight="fill" />
+        </button>
 
-    <!-- Volume -->
-    <div class="flex items-center gap-3 px-4">
-      <button
-        onclick={() => (isMuted = !isMuted)}
-        class="text-white/40 hover:text-white transition-colors"
-      >
-        {#if isMuted || volume === 0}
-          <SpeakerSlash size={16} />
-        {:else if volume < 0.5}
-          <SpeakerLow size={16} />
-        {:else}
-          <SpeakerHigh size={16} />
-        {/if}
-      </button>
-      <input
-        type="range"
-        min="0"
-        max="1"
-        step="0.01"
-        bind:value={volume}
-        class="flex-grow h-1 bg-white/10 accent-white/40 cursor-pointer appearance-none rounded-full"
-      />
+        <button
+          onclick={toggleRepeat}
+          class="transition-colors {repeatMode !== 'off'
+            ? 'text-night-pink'
+            : 'text-white/20 hover:text-white/40'}"
+          title="Repeat: {repeatMode}"
+        >
+          {#if repeatMode === "one"}
+            <RepeatOnce size={14} weight="bold" />
+          {:else}
+            <Repeat
+              size={14}
+              weight={repeatMode === "all" ? "bold" : "regular"}
+            />
+          {/if}
+        </button>
+      </div>
+
+      <!-- Compact Volume (Restored to the right) -->
+      <div class="flex items-center gap-1.5 w-16 sm:w-20 flex-shrink-0">
+        <button
+          onclick={() => (isMuted = !isMuted)}
+          class="text-white/20 hover:text-white/40 transition-colors"
+        >
+          {#if isMuted || volume === 0}
+            <SpeakerSlash size={13} />
+          {:else}
+            <SpeakerHigh size={13} />
+          {/if}
+        </button>
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          bind:value={volume}
+          class="w-full h-1 bg-white/5 accent-white/20 cursor-pointer appearance-none rounded-full"
+        />
+      </div>
     </div>
   </div>
 
-  <!-- Playlist -->
+  <!-- Playlist (Expanded Area) -->
   <div
-    class="flex-grow overflow-y-auto custom-scrollbar border-t border-white/5 bg-night-black/20"
+    class="flex-grow overflow-y-auto custom-scrollbar border-t border-white/5 bg-night-black/10"
   >
     {#each playlist as track, i}
       <button
         onclick={() => handleTrackSelect(i)}
-        class="w-full px-5 py-4 flex items-center gap-4 hover:bg-white/5 transition-colors group {currentIndex ===
+        class="w-full px-4 py-2.5 flex items-center gap-3 hover:bg-white/[0.03] transition-colors group {currentIndex ===
         i
-          ? 'bg-white/5'
+          ? 'bg-white/[0.03]'
           : ''}"
       >
         <div
-          class="w-10 h-10 rounded-sm bg-white/5 border border-white/5 flex items-center justify-center text-white/20 group-hover:text-night-pink group-hover:border-night-pink/30 transition-all relative overflow-hidden"
+          class="w-8 h-8 rounded-sm bg-white/5 border border-white/5 flex items-center justify-center text-white/20 group-hover:text-night-pink group-hover:border-night-pink/20 transition-all relative overflow-hidden flex-shrink-0"
         >
           {#if currentIndex === i}
             {#if isPlaying}
               <Pause
-                size={18}
+                size={14}
                 weight="fill"
                 class="text-night-pink animate-pulse"
               />
-              <!-- Subtle equalizer overlay -->
               <div
-                class="absolute bottom-1 flex gap-0.5 items-end h-2 opacity-40"
+                class="absolute bottom-0.5 flex gap-0.5 items-end h-1.5 opacity-40"
               >
                 <div
                   class="w-0.5 bg-night-pink animate-[music-bar_0.8s_infinite]"
@@ -473,17 +473,17 @@
                 ></div>
               </div>
             {:else}
-              <Play size={18} weight="fill" class="text-night-pink" />
+              <Play size={14} weight="fill" class="text-night-pink" />
             {/if}
           {:else}
-            <MusicNotes size={18} />
+            <MusicNotes size={14} />
           {/if}
         </div>
         <div
           class="flex flex-col items-start justify-center overflow-hidden flex-grow text-left"
         >
           <span
-            class="text-[13px] font-bold text-white group-hover:text-night-pink transition-colors truncate w-full text-left {currentIndex ===
+            class="text-[11px] font-bold text-white group-hover:text-night-pink transition-colors truncate w-full {currentIndex ===
             i
               ? 'text-night-pink'
               : ''}"
@@ -491,7 +491,7 @@
             {track.title}
           </span>
           <span
-            class="text-[9px] text-white/40 uppercase tracking-[0.2em] mt-0.5 truncate w-full text-left group-hover:text-white/60 transition-colors"
+            class="text-[8px] text-white/30 uppercase tracking-[0.1em] truncate w-full group-hover:text-white/50 transition-colors"
           >
             {track.artist}
           </span>
