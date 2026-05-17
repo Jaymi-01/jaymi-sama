@@ -16,21 +16,22 @@
   import Contact from './lib/components/Contact.svelte';
   import Settings from './lib/components/Settings.svelte';
   import Terminal from './lib/components/Terminal.svelte';
+  import MediaPlayer from './lib/components/MediaPlayer.svelte';
   import { themeManager } from './lib/theme.svelte';
-  import { Gear, TerminalWindow } from 'phosphor-svelte';
+  import { Gear, TerminalWindow, Headphones } from 'phosphor-svelte';
 
   let isBooted = $state(false);
   let isShuttingDown = $state(false);
   let isShutdownModalOpen = $state(false);
-  
+
   const windowConfig = [
     { id: 'about', title: 'System_Info.sh', component: About, icon: User },
     { id: 'projects', title: 'Modules.bin', component: Projects, icon: Code },
     { id: 'contact', title: 'Secure_Link.exe', component: Contact, icon: Envelope },
     { id: 'terminal', title: 'Terminal.exe', component: Terminal, icon: TerminalWindow },
+    { id: 'media', title: 'Media_Player.exe', component: MediaPlayer, icon: Headphones },
     { id: 'settings', title: 'Settings.sys', component: Settings, icon: Gear }
   ];
-
   let windows = $state(windowConfig.map(w => ({
     ...w,
     isOpen: false,
